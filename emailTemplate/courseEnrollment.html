@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Enrollment Confirmation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    h1 {
+      color: #4a4a4a;
+    }
+
+    .details {
+      background-color: #f9f9f9;
+      padding: 15px;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Course Enrollment Confirmation</h1>
+    <p>Congratulations! You have been successfully enrolled in a new course.</p>
+    <div class="details">
+      <p><strong>Course:</strong> {{courseName}}</p>
+      <p><strong>Enrollment Status:</strong> {{enrollmentStatus}}</p>
+      <p><strong>Payment Status:</strong> {{paymentStatus}}</p>
+    </div>
+    <p>Please login to your account to access the course content.</p>
+    <a href="https://eduquestlms.vercel.app" target="_blank">Login here</a>
+    <p>We're excited to have you on board. If you have any questions or need assistance, please don't hesitate to
+      contact our support team.</p>
+    <p>Best regards,<br>Your Education Team</p>
+  </div>
+</body>
+
+</html>

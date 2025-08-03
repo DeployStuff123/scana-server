@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Confirmation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .header {
+      background-color: #4CAF50;
+      padding: 10px;
+      text-align: center;
+      color: white;
+    }
+    .details {
+      margin: 20px 0;
+    }
+    .details p {
+      font-size: 1.1em;
+    }
+    .footer {
+      text-align: center;
+      color: #777;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Order Confirmation</h1>
+    </div>
+    <p>Dear {{name}},</p>
+    <p>Thank you for placing an order with us. Here are the details of your order:</p>
+    <div class="details">
+      <p><strong>Order Name:</strong> {{orderName}}</p>
+      <p><strong>Status:</strong> {{status}}</p>
+      <p><strong>Phone:</strong> {{phone}}</p>
+      <p><strong>Description:</strong> {{desc}}</p>
+    </div>
+    <p>If you have any questions or need assistance, feel free to contact us.</p>
+    <div class="footer">
+      <p>Thank you for choosing our service!</p>
+      <p>PoshCoder Team</p>
+    </div>
+  </div>
+</body>
+</html>

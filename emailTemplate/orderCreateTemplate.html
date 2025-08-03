@@ -1,0 +1,70 @@
+<!-- orderEmailTemplate.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Order Placed</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    .header {
+      text-align: center;
+      padding: 10px 0;
+      background-color: #0073e6;
+      color: white;
+    }
+    .content {
+      padding: 20px;
+    }
+    .order-info {
+      margin: 10px 0;
+      background-color: #f9f9f9;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .order-info h3 {
+      margin: 0 0 5px;
+    }
+    .footer {
+      text-align: center;
+      padding: 10px;
+      color: #777;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>New Order Notification</h1>
+    </div>
+    <div class="content">
+      <h2>A new order has been placed!</h2>
+      <div class="order-info">
+        <h3>Order Details:</h3>
+        <p><strong>Order Name:</strong> {{orderName}}</p>
+        <p><strong>User Name:</strong> {{name}}</p>
+        <p><strong>Phone:</strong> {{phone}}</p>
+        <p><strong>Description:</strong> {{desc}}</p>
+        <p><strong>Status:</strong> {{status}}</p>
+        <p><strong>Placed by:</strong> {{username}} ({{email}})</p>
+      </div>
+    </div>
+    <div class="footer">
+      <p>&copy; 2024 Posh Coder. All Rights Reserved.</p>
+    </div>
+  </div>
+</body>
+</html>

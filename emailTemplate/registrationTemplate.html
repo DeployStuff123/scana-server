@@ -1,0 +1,62 @@
+<!-- emailTemplate.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <title>Title here</title> -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    .header {
+      text-align: center;
+      padding: 10px 0;
+      background-color: #0073e6;
+      color: white;
+    }
+    .content {
+      padding: 20px;
+      text-align: center;
+    }
+    .btn {
+      background-color: #0073e6;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+    .footer {
+      text-align: center;
+      padding: 10px;
+      color: #777;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1 style="color: white;">EduQuest</h1>
+    </div>
+    <div class="content">
+      <h2>Email Verification</h2>
+      <p style="margin-bottom: 20px;">Please verify your email by clicking the button below:</p>
+      <a href="https://eduquestlms.vercel.app/verify-email?token={{token}}" class="btn">Verify Email</a>
+    </div>
+    <div class="footer">
+      <p>&copy; 2024 LMS. All Rights Reserved.</p>
+    </div>
+  </div>
+</body>
+</html>
