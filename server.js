@@ -55,9 +55,11 @@ app.use(cors({
   origin: [
     'http://localhost:4000',
     'http://localhost:3000',
-    'https://litz.vercel.app',
-    'https://litz-admin.vercel.app',
-  ], credentials: true
+    'https://www.scanaqr.com',
+    'https://scanaqr.com',
+    'https://admin.scanaqr.com'
+  ],
+  credentials: true
 }));
 app.use(express.json());
 app.use(cookieParser());
