@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "npm run lint && supervisor index.js",
+    "dev": "npm run lint && supervisor server.js",
     "lint": "eslint ."
   },
   "author": "",
