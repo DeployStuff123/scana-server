@@ -10,12 +10,22 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// const transporter = nodemailer.createTransport({
+//   service: 'Gmail',
+//   secure: false,
+//   auth: {
+//     user: process.env.EMAIL_USER,
+//     pass: process.env.EMAIL_PASS,
+//   },
+// });
+
 const transporter = nodemailer.createTransport({
-  service: 'Gmail',
-  secure: false,
+  host: 'smtp.hostinger.com', // Hostinger SMTP server
+  port: 465,                  // SSL port (use 587 for TLS)
+  secure: true,               // true for SSL, false for TLS
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
+    user: process.env.EMAIL_USER, // your Hostinger email, e.g., support@yourdomain.com
+    pass: process.env.EMAIL_PASS  // your Hostinger email password
   },
 });
 
