@@ -4,6 +4,7 @@ import { Parser } from 'json2csv';
 import { createError } from '../middleware/error.handler.js';
 import mongoose from 'mongoose';
 import userModel from '../models/user.model.js';
+import visitModel from '../models/visit.model.js';
 
 export const createLink = async (req, res, next) => {
   const { slug, destinationUrl,description, googleLogin, type, isActive, image, buttonName, buttonColor } = req.body;
@@ -69,7 +70,7 @@ export const getAllLinks = async (req, res) => {
     ];
   }
 
-  let linksQuery = linkModel.find(query).sort({ createdAt: -1 });
+  let linksQuery = linkModel.find(query).sort({ updatedAt: -1 });
 
   // Populate user for admin (needed for username display)
   if (req.user.role === 'admin') {
@@ -111,6 +112,8 @@ export const getLinkBySlug = async (req, res, next) => {
 
     const user = await userModel.findById(link.user);
 
+    // const visitList = await visitModel.find(filter).sort({ visitedAt: -1 });
+
     const emailList = emails.map((v) => ({
       _id: v._id,
       email: v.email,
@@ -118,6 +121,7 @@ export const getLinkBySlug = async (req, res, next) => {
       followUpSent: v.followUpSent,
       followUpSentAt: v.followUpSentAt,
     }));
+
 
     if (exportAs === 'csv') {
       const csvFields = ['email', 'visitedAt'];
@@ -142,6 +146,7 @@ export const getLinkBySlug = async (req, res, next) => {
       buttonName: link.buttonName,
       description: link.description,
       emailList,
+      // visitList,
       createdAt: link.createdAt,
       user: user,
       googleLoginNotForced: link.googleLoginNotForced,
@@ -177,6 +182,9 @@ export const deleteLink = async (req, res, next) => {
 
     // Delete all emails associated with this link
     await emailModel.deleteMany({ link: id });
+
+    //delete all visit
+    await visitModel.deleteMany({ link: id });
 
     res.send({ message: 'Link deleted successfully' });
   } catch (err) {

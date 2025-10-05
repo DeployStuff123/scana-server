@@ -1,5 +1,6 @@
 import linkModel from '../models/link.model.js';
 import { v4 as uuidv4 } from 'uuid';
+import visitModel from '../models/visit.model.js';
 
 
 //record anonymous unique visits
@@ -37,10 +38,17 @@ export const recordVisit = async (req, res) => {
 
       // Increment unique visit
       link.visits += 1;
+      //uniqe visit
+      const visit = new visitModel({
+        link: link._id,
+        visitIp: req.ip,
+        visitorId,
+      });
+
+      await visit.save();
+
       await link.save();
 
-      // Optional: log anonymous visit in a collection
-      // await anonymousVisitModel.create({ link: link._id, visitorId });
     }
 
     return res.status(200).json({ recorded: !alreadyVisited });
@@ -50,6 +58,25 @@ export const recordVisit = async (req, res) => {
   }
 };
 
+// get visit by slug
+export const getVisitbyLink = async (req, res, next) => {
+  const { linkId } = req.params;
+  try {
+    //populate link
+    const visit = await visitModel.find({ link: linkId }).sort({ visitedAt: -1 }).populate('link', 'slug');
+    if (!visit) return res.status(404).send({ message: 'Visit not found' });
+    res.send(visit);
+  } catch (err) {
+    next(err);
+  }
+};
+
+//selected visits delete
+export const deleteVisits = async (req, res) => {
+  const { visitIds } = req.body;
+  await visitModel.deleteMany({ _id: { $in: visitIds } });
+  return res.status(200).send({ message: 'Visits deleted' });
+};
 
 //record all visits
 // export const recordVisit = async (req, res) => {
