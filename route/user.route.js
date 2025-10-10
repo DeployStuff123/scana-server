@@ -3,6 +3,7 @@ import {
   adminCreateUser,
   adminRemoveUser,
   adminUpdateUser,
+  adminUserStatusChange,
   changePassword,
   forgotPassword,
   getAllUsers,
@@ -40,6 +41,8 @@ userRoute.get('/me', verifyToken, getLoggedUser);
 userRoute.put('/update', verifyToken, updateLoggedUser);
 
 userRoute.put('/admin/update/:id', verifyToken,isAdmin, adminUpdateUser);
+
+userRoute.put('/admin/status', verifyToken,isAdmin, adminUserStatusChange);
 
 userRoute.delete('/admin/remove/:id', verifyToken,isAdmin, adminRemoveUser);
 

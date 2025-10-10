@@ -266,6 +266,18 @@ export const adminUpdateUser = async (req, res, next) => {
     next(error);
   }
 };
+//admin user status change 
+export const adminUserStatusChange = async (req, res, next) => {
+  const { userIds, status } = req.body;
+
+  try {
+    await userModel.updateMany({ _id: { $in: userIds } }, { isBlocked: status === 'blocked' ? true : false }, { new: true });
+    res.status(200).send({ message: 'User status changed successfully!' });
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 //remove user by admin
 export const adminRemoveUser = async (req, res, next) => {
