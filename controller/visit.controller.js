@@ -58,12 +58,16 @@ export const recordVisit = async (req, res) => {
   }
 };
 
-// get visit by slug
+// get visit by link name
 export const getVisitbyLink = async (req, res, next) => {
-  const { linkId } = req.params;
+  const { linkName } = req.params;
   try {
+
+    const link = await linkModel.findOne({slug: linkName})
+    if(!link) return res.status(404).send({ message: 'Link not found' });
+
     //populate link
-    const visit = await visitModel.find({ link: linkId }).sort({ visitedAt: -1 }).populate('link', 'slug');
+    const visit = await visitModel.find({ link: link._id }).sort({ visitedAt: -1 }).populate('link', 'slug');
     if (!visit) return res.status(404).send({ message: 'Visit not found' });
     res.send(visit);
   } catch (err) {

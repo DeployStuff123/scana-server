@@ -5,7 +5,7 @@ const visitRoute = express.Router();
 
 visitRoute.post('/record/:slug', recordVisit);
 
-visitRoute.get('/get/:linkId', getVisitbyLink);
+visitRoute.get('/get/:linkName', getVisitbyLink);
 
 visitRoute.post('/delete', deleteVisits);
 

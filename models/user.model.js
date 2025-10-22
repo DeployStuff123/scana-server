@@ -32,6 +32,7 @@ const UserSchema = new Schema(
     isBlocked: { type: Boolean, default: false },
     resetPasswordToken: String,
     resetPasswordExpiry: Date,
+    lastActive: { type: Date },
   },
   { timestamps: true }
 );
