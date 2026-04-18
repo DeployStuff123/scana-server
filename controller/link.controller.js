@@ -5,9 +5,10 @@ import { createError } from '../middleware/error.handler.js';
 import mongoose from 'mongoose';
 import userModel from '../models/user.model.js';
 import visitModel from '../models/visit.model.js';
+import { escapeRegex } from '../utils/escapeRegex.js';
 
 export const createLink = async (req, res, next) => {
-  const { slug, destinationUrl,description, googleLogin, type, isActive, image, buttonName, buttonColor } = req.body;
+  const { slug, destinationUrl, description, googleLogin, type, isActive, image, buttonName, buttonColor } = req.body;
   try {
     const link = new linkModel({
       slug,
@@ -33,48 +34,50 @@ export const createLink = async (req, res, next) => {
 };
 
 export const getAllLinks = async (req, res) => {
-  const { search, status } = req.query;
+  const { search, status, page = 1, limit = 10 } = req.query; // Default values
+
+  const searchString = escapeRegex(search)
+
   let query = {};
 
-  if (status) {
-    if (status === 'active') {
-      query.isActive = true;
-    } else if (status === 'inactive') {
-      query.isActive = false;
-    }
+  // Status Filter
+  if (status && status !== 'all') {
+    query.isActive = status === 'active';
   }
-  // For regular users, only show their own links
+
+  // Role-based Query
   if (req.user.role === 'user') {
     query.user = req.user.id;
-
-    // If search term is provided, search by slug (within their own links)
-    if (search) {
-      query.slug = { $regex: search, $options: 'i' };
+    if (searchString) {
+      query.slug = { $regex: searchString, $options: 'i' };
     }
   }
 
-  // For admins, search by slug OR username
-  if (search && req.user.role === 'admin') {
-    // First find users that match the username search
-    const matchingUsers = await mongoose
-      .model('User')
-      .find({
-        username: { $regex: search, $options: 'i' },
-      })
-      .select('_id');
+  // Admin Search (Slug OR Username)
+  if (searchString && req.user.role === 'admin') {
+    const matchingUsers = await mongoose.model('User').find({
+      username: { $regex: searchString, $options: 'i' },
+    }).select('_id');
 
-    // Create an OR condition to search in slug or user IDs
     query.$or = [
-      { slug: { $regex: search, $options: 'i' } },
+      { slug: { $regex: searchString, $options: 'i' } },
       { user: { $in: matchingUsers.map((u) => u._id) } },
     ];
   }
 
-  let linksQuery = linkModel.find(query).sort({ updatedAt: -1 });
+  // Pagination Logic
+  const skip = (parseInt(page) - 1) * parseInt(limit);
 
-  // Populate user for admin (needed for username display)
+  // Get Total Count for the specific query (for frontend pagination)
+  const total = await linkModel.countDocuments(query);
+
+  let linksQuery = linkModel.find(query)
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(parseInt(limit));
+
   if (req.user.role === 'admin') {
-    linksQuery = linksQuery.populate('user', 'username email _id'); // only populate username
+    linksQuery = linksQuery.populate('user', 'username email _id');
   }
 
   const links = await linksQuery.exec();
@@ -89,7 +92,12 @@ export const getAllLinks = async (req, res) => {
     })
   );
 
-  res.json(linksWithEmailCounts);
+  res.json({
+    links: linksWithEmailCounts,
+    total,
+    totalPages: Math.ceil(total / limit),
+    currentPage: parseInt(page),
+  });
 };
 
 export const getLinkBySlug = async (req, res, next) => {

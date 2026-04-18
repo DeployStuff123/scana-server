@@ -12,6 +12,7 @@ import { createError } from '../middleware/error.handler.js';
 import userModel from '../models/user.model.js';
 import linkModel from '../models/link.model.js';
 import followupModel from '../models/followup.model.js';
+import { escapeRegex } from '../utils/escapeRegex.js';
 
 // register user
 export const handleReg = async (req, res, next) => {
@@ -93,12 +94,12 @@ export const adminCreateUser = async (req, res, next) => {
 
 //get all users
 export const getAllUsers = async (req, res, next) => {
-  const { search } = req.query;
+  const searchString = escapeRegex(req.query.search)
   try {
     const users = await userModel.find({
       $or: [
-        { username: { $regex: search, $options: 'i' } },
-        { email: { $regex: search, $options: 'i' } },
+        { username: { $regex: searchString, $options: 'i' } },
+        { email: { $regex: searchString, $options: 'i' } },
       ]
     }).sort({ createdAt: -1 });
     const filteredUsers = users.filter(user => user.role !== 'admin');

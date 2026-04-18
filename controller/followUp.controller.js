@@ -1,4 +1,5 @@
 import followupModel from '../models/followup.model.js';
+import { escapeRegex } from '../utils/escapeRegex.js';
 
 export const requestFollowUp = async (req, res) => {
   const {
@@ -68,6 +69,7 @@ export const requestFollowUp = async (req, res) => {
 
 export const getAllFollowUps = async (req, res) => {
   const { slug, status } = req.query;
+  const searchString = escapeRegex(slug)
   let query = {};
 
   // Add user filter based on role
@@ -90,7 +92,7 @@ export const getAllFollowUps = async (req, res) => {
     .sort({ createdAt: -1 })
     .populate({
       path: 'link',
-      match: slug ? { slug: slug } : {},
+      match: searchString ? { slug: searchString } : {},
       select: 'slug',
     })
     .populate(req.user.role === 'admin' ? 'user' : '');
@@ -143,8 +145,8 @@ export const updateFollowUp = async (req, res) => {
     }
   }
 
-  if(followUpType === 'scheduled') {
-    if(!sendHour) {
+  if (followUpType === 'scheduled') {
+    if (!sendHour) {
       return res.status(400).json({ sendHour: 'Send hour is required for scheduled follow-ups' });
     }
   }
